@@ -336,6 +336,42 @@ app.post('/exam5',
   }
 );
 
+const BugReport = require('./models/BugReport');
+
+app.get('/showBugReports',
+isLoggedIn,
+async (req,res,next) =>{
+  try {
+    const bugs = await BugReport.find({userID:res.locals.user._id})
+    res.locals.bugs = bugs
+    res.render('showBugReports')
+  }catch(e){
+    next(e);
+  }
+}
+);
+
+
+app.post('/showBugReports',
+  isLoggedIn,
+  async (req,res,next) =>{
+    try {
+      const shortDesc = req.body.shortDesc;
+      const detailDesc = req.body.detailDesc;
+      const bugObj = {
+        userID:res.locals.user._id,
+        shortDesc:shortDesc,
+        detailDesc:detailDesc,
+      }
+      const bugItem = new BugReport(bugObj) // create ORM object for the item
+      await bugItem.save(); // stores in the database
+      res.redirect('/showBugReports')
+    } catch(err){
+      next(err);
+    }
+  }
+);
+
 app.get('/simpleform',
   isLoggedIn,
   (req,res,next) => {

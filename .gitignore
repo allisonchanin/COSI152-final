@@ -1,4 +1,5 @@
 node_modules/
+startup.sh
 .expo/
 dist/
 npm-debug.*

@@ -1,0 +1,17 @@
+<h1> Exam 6: Bug Reports </h1>
+<% for(bug of bugs){%> 
+    <hr>
+    <h2>Bug Report:</h2>
+    <h5> <%=bug.shortDesc %> </h5> 
+    <i><%= bug.detailDesc %> </i>
+<% } %>
+
+<hr>
+<h1>Add New bug report</h1>
+<form method="post" action="/showBugReports">
+    <p>short bug description:</p><input type="text" name="shortDesc">
+    <p>detailed description:</p>
+    <textarea name="detailDesc"></textarea>
+    <br>
+    <input type="submit">
+</form>
