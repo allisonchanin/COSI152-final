@@ -26,17 +26,15 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
+                Menu
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="/practicestuff">COSI 152 Stuff</a></li>
                 <% if (loggedIn) {%>
                   <li><a class="dropdown-item" href="/exam5">Contacts</a></li>
                   <li> <a class="dropdown-item" href="/todo">To Do</a></li>
                 <% } %>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
+                <a class="dropdown-item" href="/practicestuff">COSI 152 Stuff</a>              </ul>
             </li>
             <% if (!loggedIn) {%>
               <li class="nav-item">
