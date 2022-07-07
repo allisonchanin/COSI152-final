@@ -1,9 +1,26 @@
-<h1>palette</h1>
+<h2>Palette</h2>
 
-<% for(color of colors){%> 
-    <h3><%=color.name %></h3>
-    <a href="paletteToggle/<%=color.id %>"> <%=color.using %></a>
-    <a href="/paletteDelete/<%=color.id %>"> delete</a>
-<% } %> 
-
-
+<table class="table table-bordered table-striped">
+    <thead>
+          <th>sample</th>
+          <th>name</th>
+          <th>swatch</th>
+          <th>delete?</th>
+      </thead>
+      <tbody>
+          <% for(color of palette){%> 
+          <tr> 
+              <td style="background-color:<%= color.colorId.hex %>;"></td>
+              <td> <%= color.colorId.numberID %> <%= color.colorId.name %> </td> 
+              <td>
+                  <img 
+                  width="40"
+                  height="40"
+                  src="<%=color.colorId.strImage %>" 
+                  alt="swatch of <%=color.colorId.name %>"> 
+              </td> 
+              <td><a href="/deleteColor/<%= color._id%>">delete</a></td>
+          </tr>
+          <% } %>
+    </tbody>
+</table>

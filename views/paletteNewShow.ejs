@@ -6,6 +6,7 @@
             <th>sample</th>
             <th>name</th>
             <th>swatch</th>
+            <th>add?</th>
         </thead>
         <tbody>
             <% for(color of colors){%> 
@@ -17,8 +18,9 @@
                     width="40"
                     height="40"
                     src="<%=color.strImage %>" 
-                    alt="<%=color.name %>"> 
+                    alt="swatch of <%=color.name %>"> 
                 </td> 
+                <td><a href="/addColor/<%= color._id%>">add</a></td>
             </tr>
             <% } %>
         </tbody>

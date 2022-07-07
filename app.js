@@ -229,73 +229,73 @@ app.get('/todoToggle/:itemID',
 //changing
 const Color = require('./models/Color');
 
-app.get('/palette',
-  (req,res,next) =>{
-    res.render('palette')
-  }
-)
+// app.get('/palette',
+//   (req,res,next) =>{
+//     res.render('palette')
+//   }
+// )
 
-app.post('/palette',
-  isLoggedIn,
-  async (req,res,next) =>{
-    try {
-      const name = req.body.name;
-      const colorObj = {
-        userID:res.locals.user._id,
-        name:name,
-        using:false,
-      }
-      const color = new Color(colorObj) // create ORM object for the item
-      await color.save(); // stores in the database
-      res.redirect('/paletteShow')
+// app.post('/palette',
+//   isLoggedIn,
+//   async (req,res,next) =>{
+//     try {
+//       const name = req.body.name;
+//       const colorObj = {
+//         userID:res.locals.user._id,
+//         name:name,
+//         using:false,
+//       }
+//       const color = new Color(colorObj) // create ORM object for the item
+//       await color.save(); // stores in the database
+//       res.redirect('/paletteShow')
 
-    } catch(err){
-      next(err);
-    }
-  }
-);
+//     } catch(err){
+//       next(err);
+//     }
+//   }
+// );
 
-app.get('/paletteShow',
-  isLoggedIn,
-  async (req,res,next) =>{
-    try {
-      const colors = await Color.find({userID:res.locals.user._id})
-      res.locals.colors = colors
-      res.render('paletteShow')
-      //res.json(todoitems);
-    }catch(e){
-      next(e);
-    }
-  }
-);
+// app.get('/paletteShow',
+//   isLoggedIn,
+//   async (req,res,next) =>{
+//     try {
+//       const colors = await Color.find({userID:res.locals.user._id})
+//       res.locals.colors = colors
+//       res.render('paletteShow')
+//       //res.json(todoitems);
+//     }catch(e){
+//       next(e);
+//     }
+//   }
+// );
 
-app.get('/paletteDelete/:itemID',
-  isLoggedIn,
-  async (req,res,next) =>{
-    try {
-      const itemID = req.params.itemID;
-      await Color.deleteOne({_id:itemID});
-      res.redirect('/paletteShow');
-    } catch (e){
-        next(e)
-    }
-  }
-)
+// app.get('/paletteDelete/:itemID',
+//   isLoggedIn,
+//   async (req,res,next) =>{
+//     try {
+//       const itemID = req.params.itemID;
+//       await Color.deleteOne({_id:itemID});
+//       res.redirect('/paletteShow');
+//     } catch (e){
+//         next(e)
+//     }
+//   }
+// )
 
-app.get('/paletteToggle/:itemID',
-  isLoggedIn,
-  async (req,res,next) =>{
-    try {
-      const itemID = req.params.itemID;
-      const item = await Color.findOne({_id:itemID});
-      item.using = !item.using;
-      await item.save();
-      res.redirect('/paletteShow');
-    } catch (e){
-        next(e)
-    }
-  }
-)
+// app.get('/paletteToggle/:itemID',
+//   isLoggedIn,
+//   async (req,res,next) =>{
+//     try {
+//       const itemID = req.params.itemID;
+//       const item = await Color.findOne({_id:itemID});
+//       item.using = !item.using;
+//       await item.save();
+//       res.redirect('/paletteShow');
+//     } catch (e){
+//         next(e)
+//     }
+//   }
+// )
 
 const Contact = require('./models/Contact');
 
@@ -310,7 +310,6 @@ async (req,res,next) =>{
   }
 }
 );
-
 
 app.post('/exam5',
   isLoggedIn,
@@ -470,26 +469,10 @@ app.get('/uploadDB',
   }
 )
 
-// app.get('/bigCourses',
-//   async (req,res,next) => {
-//     try{
-//       const bigCourses =  await Course.find({enrolled:{$gt:150}})
-//                           //.select("subject coursenum name enrolled term")
-//                           //.sort({term:1,enrolled:-1})
-//                           //.limit(3)
-//                           ;
-//       res.json(bigCourses);
-//     }catch(e){
-//       next(e)
-//     }
-//   })
-
 app.get('/coursesBySubject',
   (req,res,next) => {
     res.render('coursesBySubject')
 })
-  
-
 
 app.post('/coursesBySubject',
   async (req,res,next) => {
@@ -513,7 +496,6 @@ app.post('/coursesBySubject',
   }
 )
 
-
 app.get('/uploadDBPalette',
   async (req,res,next) => {
     await Color.deleteMany({});
@@ -529,8 +511,6 @@ app.get('/paletteNew',
     res.render('paletteNew')
 })
   
-
-
 app.post('/paletteNew',
   async (req,res,next) => {
     try{
@@ -538,12 +518,62 @@ app.post('/paletteNew',
       const data = await Color.find({
         colorCategory:colorCategory,
       })
-               .select("name numberID colorCategory strImage hex")
+      .select("name numberID colorCategory strImage hex")
       //res.json(data); 
       res.locals.colors = data;
       res.render('paletteNewShow');
     }catch(e){
       next(e)
+    }
+  }
+)
+
+const Palette = require('./models/Palette');
+
+app.get('/addColor/:colorId',
+   isLoggedIn,
+   async (req,res,next) => {
+    try {
+      const colorItem = 
+         new Palette(
+          {
+            userid:res.locals.user._id,
+            colorId:req.params.colorId}
+          )
+      await colorItem.save();
+      res.redirect('/paletteShow')
+    }catch(e) {
+      next(e)
+    }
+   }
+)
+
+app.get('/paletteShow',
+  isLoggedIn,
+  async (req,res,next) => {
+    try{
+      const palette = 
+         await Palette.find({userId:res.locals.user.id})
+             .populate('colorId');
+      //res.json(courses);
+      res.locals.palette = palette;
+      res.render('paletteShow')
+
+    }catch(e){
+      next(e);
+    }
+  }
+)
+
+app.get('/deleteColor/:itemID',
+  isLoggedIn,
+  async (req,res,next) =>{
+    try {
+      const itemID = req.params.itemID;
+      await Palette.deleteOne({_id:itemID});
+      res.redirect('/paletteShow');
+    } catch (e){
+        next(e)
     }
   }
 )
