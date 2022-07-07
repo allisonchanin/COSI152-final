@@ -537,7 +537,7 @@ app.get('/addColor/:colorId',
       const colorItem = 
          new Palette(
           {
-            userid:res.locals.user._id,
+            userID:res.locals.user._id,
             colorId:req.params.colorId}
           )
       await colorItem.save();
@@ -553,7 +553,7 @@ app.get('/paletteShow',
   async (req,res,next) => {
     try{
       const palette = 
-         await Palette.find({userId:res.locals.user.id})
+         await Palette.find({userID:res.locals.user._id})
              .populate('colorId');
       //res.json(courses);
       res.locals.palette = palette;
