@@ -14,9 +14,7 @@ Eventually, I would like to add the ability to have multiple palettes, with uniq
 After that, I would like to add a pattern making mechanism. Where you can make a palette and then use that palette to make a cross-stitching pattern.
 
 ## How to Install
-Website is live at: https://cosi152-pattern.herokuapp.com/
-
-Otherwise:
+to launch:
 1. Clone repository / or download as a zip
 2. To run locally you will need a database. Add a file `./startup.sh`
 ```bash
@@ -26,6 +24,8 @@ echo "connecting to $mongodb_URI"
 nodemon
 ```
 3. Then to run the app change to the correct directory and type `bash startup.sh`
+
+Website was live at: https://cosi152-pattern.herokuapp.com/
 
 ## How to Use
 The main purpose of the app so far is to create a palette, you can choose a color category from the drop down menu. Then the page will show all the DMC threads classified as that color. Then you can add the color you want to your palette. From the palette page you can either delete colors or add new ones through the same method.
